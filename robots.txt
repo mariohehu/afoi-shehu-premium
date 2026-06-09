@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /privacy.html
+Disallow: /thank-you.html
+
+Sitemap: https://afoi-shehu.gr/sitemap.xml
