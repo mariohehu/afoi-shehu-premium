@@ -118,38 +118,45 @@
             }
         }
 
-        /* ---- Portfolio: dynamic gallery from projects.json (CMS) ---- */
+        /* ---- Portfolio: dynamic gallery, one JSON file per category (CMS) ---- */
         const gallery = $('#gallery');
-        const CATS = {
-            renovations: { label: 'Ανακαινίσεις', icon: 'ph-house' },
-            drywall:     { label: 'Γυψοσανίδες', icon: 'ph-wall' },
-            ironworks:   { label: 'Σιδηροκατασκευές', icon: 'ph-hammer' },
-            churches:    { label: 'Εκκλησίες', icon: 'ph-church' },
-            insulations: { label: 'Μονώσεις & Σκεπές', icon: 'ph-drop' }
-        };
+        const CATS = [
+            { key: 'renovations', file: 'content/renovations.json', icon: 'ph-house' },
+            { key: 'drywall',     file: 'content/drywall.json',     icon: 'ph-wall' },
+            { key: 'ironworks',   file: 'content/ironworks.json',   icon: 'ph-hammer' },
+            { key: 'churches',    file: 'content/churches.json',    icon: 'ph-church' },
+            { key: 'insulations', file: 'content/insulations.json', icon: 'ph-drop' }
+        ];
 
-        const renderGallery = (data) => {
+        // Το CMS αποθηκεύει διαδρομές με αρχικό "/" — το αφαιρούμε ώστε να
+        // δουλεύουν και κάτω από subpath (GitHub Pages) και σε root domain.
+        const cleanSrc = (src) => String(src).replace(/^\/+/, '');
+
+        const renderGallery = (entries) => {
             const frag = document.createDocumentFragment();
-            (data.projects || []).forEach(project => {
-                const cat = CATS[project.category] || { label: project.title, icon: 'ph-image' };
-                (project.images || []).forEach(src => {
+            entries.forEach(({ cat, data }) => {
+                if (!data) return;
+                (data.images || []).forEach(src => {
                     const fig = document.createElement('figure');
                     fig.className = 'shot';
-                    fig.setAttribute('data-cat', project.category);
+                    fig.setAttribute('data-cat', cat.key);
                     const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = project.title;
+                    img.src = cleanSrc(src);
+                    img.alt = data.title || cat.key;
                     img.loading = 'lazy';
                     const cap = document.createElement('figcaption');
                     cap.className = 'cap';
                     cap.innerHTML = `<i class="ph-fill ${cat.icon}"></i> `;
-                    cap.append(project.title);
+                    cap.append(data.title || '');
                     fig.append(img, cap);
                     frag.append(fig);
                 });
             });
             gallery.innerHTML = '';
             gallery.append(frag);
+            if (!gallery.children.length) {
+                gallery.innerHTML = '<p class="load-note">Δεν βρέθηκαν έργα.</p>';
+            }
         };
 
         const applyFilter = (f) => {
@@ -175,12 +182,18 @@
         });
 
         if (gallery) {
-            fetch('projects.json', { cache: 'no-cache' })
-                .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-                .then(renderGallery)
-                .catch(() => {
+            Promise.all(CATS.map(cat =>
+                fetch(cat.file, { cache: 'no-cache' })
+                    .then(r => r.ok ? r.json() : null)
+                    .catch(() => null)
+                    .then(data => ({ cat, data }))
+            )).then(entries => {
+                if (entries.every(e => !e.data)) {
                     gallery.innerHTML = '<p class="load-note">Δεν ήταν δυνατή η φόρτωση των έργων. Δοκιμάστε ξανά αργότερα.</p>';
-                });
+                } else {
+                    renderGallery(entries);
+                }
+            });
         }
 
         /* ---- Lightbox (event delegation — works for dynamic shots) ---- */

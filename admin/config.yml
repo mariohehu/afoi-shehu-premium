@@ -2,54 +2,91 @@ backend:
   name: git-gateway
   branch: main
 
-# Πού αποθηκεύονται οι φωτογραφίες που ανεβάζεις
+# Προεπιλεγμένος φάκελος για λοιπά αρχεία (π.χ. λογότυπα)
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 locale: "el"
 
-# Μήνυμα commit (τι γράφεται στο ιστορικό όταν δημοσιεύεις)
 backend_commit_messages:
-  create: "Νέο έργο: {{slug}}"
-  update: "Ενημέρωση έργων"
+  create: "Νέο περιεχόμενο: {{slug}}"
+  update: "Ενημέρωση έργων: {{slug}}"
   uploadMedia: "Νέα φωτογραφία: {{path}}"
   deleteMedia: "Διαγραφή φωτογραφίας: {{path}}"
 
+# Κάθε κατηγορία = δικό της αρχείο + δικός της φάκελος εικόνων.
+# Ό,τι ανεβάζεις στις "Ανακαινίσεις" πάει αυτόματα στο assets/renovations/ κ.ο.κ.
 collections:
   - name: "portfolio"
     label: "Έργα (Portfolio)"
-    description: "Πρόσθεσε ή επεξεργάσου τα έργα που εμφανίζονται στη σελίδα."
+    description: "Διάλεξε κατηγορία και πρόσθεσε φωτογραφίες. Κάθε κατηγορία αποθηκεύει τις φωτογραφίες στον δικό της φάκελο."
     files:
-      - name: "projects"
-        label: "Λίστα Έργων"
-        file: "projects.json"
+      - name: "renovations"
+        label: "🏠 Ανακαινίσεις & Αναπαλαιώσεις"
+        file: "content/renovations.json"
         format: "json"
+        media_folder: "/assets/renovations"
+        public_folder: "/assets/renovations"
         fields:
-          - label: "Έργα"
-            name: "projects"
-            label_singular: "Έργο"
+          - { label: "Τίτλος Κατηγορίας", name: "title", widget: "string" }
+          - label: "Φωτογραφίες"
+            name: "images"
             widget: "list"
-            summary: "{{fields.title}}  ·  {{fields.category}}"
-            fields:
-              - label: "Τίτλος Έργου"
-                name: "title"
-                widget: "string"
-                hint: "π.χ. Ανακαίνιση διαμερίσματος, Τρίκαλα"
-              - label: "Κατηγορία"
-                name: "category"
-                widget: "select"
-                default: "renovations"
-                options:
-                  - { label: "Ανακαινίσεις", value: "renovations" }
-                  - { label: "Γυψοσανίδες / Ξηρά Δόμηση", value: "drywall" }
-                  - { label: "Σιδηροκατασκευές", value: "ironworks" }
-                  - { label: "Εκκλησίες", value: "churches" }
-                  - { label: "Μονώσεις & Σκεπές", value: "insulations" }
-              - label: "Φωτογραφίες"
-                name: "images"
-                widget: "list"
-                hint: "Ανέβασε μία ή περισσότερες φωτογραφίες του έργου."
-                field:
-                  label: "Φωτογραφία"
-                  name: "image"
-                  widget: "image"
+            hint: "Οι φωτογραφίες αποθηκεύονται αυτόματα στον φάκελο assets/renovations/"
+            field: { label: "Φωτογραφία", name: "image", widget: "image" }
+
+      - name: "drywall"
+        label: "🧱 Ξηρά Δόμηση & Γυψοσανίδες"
+        file: "content/drywall.json"
+        format: "json"
+        media_folder: "/assets/drywall"
+        public_folder: "/assets/drywall"
+        fields:
+          - { label: "Τίτλος Κατηγορίας", name: "title", widget: "string" }
+          - label: "Φωτογραφίες"
+            name: "images"
+            widget: "list"
+            hint: "Οι φωτογραφίες αποθηκεύονται αυτόματα στον φάκελο assets/drywall/"
+            field: { label: "Φωτογραφία", name: "image", widget: "image" }
+
+      - name: "ironworks"
+        label: "🔨 Σιδηροκατασκευές"
+        file: "content/ironworks.json"
+        format: "json"
+        media_folder: "/assets/ironworks"
+        public_folder: "/assets/ironworks"
+        fields:
+          - { label: "Τίτλος Κατηγορίας", name: "title", widget: "string" }
+          - label: "Φωτογραφίες"
+            name: "images"
+            widget: "list"
+            hint: "Οι φωτογραφίες αποθηκεύονται αυτόματα στον φάκελο assets/ironworks/"
+            field: { label: "Φωτογραφία", name: "image", widget: "image" }
+
+      - name: "churches"
+        label: "⛪ Έργα σε Εκκλησίες"
+        file: "content/churches.json"
+        format: "json"
+        media_folder: "/assets/churches"
+        public_folder: "/assets/churches"
+        fields:
+          - { label: "Τίτλος Κατηγορίας", name: "title", widget: "string" }
+          - label: "Φωτογραφίες"
+            name: "images"
+            widget: "list"
+            hint: "Οι φωτογραφίες αποθηκεύονται αυτόματα στον φάκελο assets/churches/"
+            field: { label: "Φωτογραφία", name: "image", widget: "image" }
+
+      - name: "insulations"
+        label: "💧 Μονώσεις & Σκεπές"
+        file: "content/insulations.json"
+        format: "json"
+        media_folder: "/assets/insulations"
+        public_folder: "/assets/insulations"
+        fields:
+          - { label: "Τίτλος Κατηγορίας", name: "title", widget: "string" }
+          - label: "Φωτογραφίες"
+            name: "images"
+            widget: "list"
+            hint: "Οι φωτογραφίες αποθηκεύονται αυτόματα στον φάκελο assets/insulations/"
+            field: { label: "Φωτογραφία", name: "image", widget: "image" }
