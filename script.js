@@ -118,28 +118,72 @@
             }
         }
 
-        /* ---- Portfolio filter ---- */
+        /* ---- Portfolio: dynamic gallery from projects.json (CMS) ---- */
+        const gallery = $('#gallery');
+        const CATS = {
+            renovations: { label: 'Ανακαινίσεις', icon: 'ph-house' },
+            drywall:     { label: 'Γυψοσανίδες', icon: 'ph-wall' },
+            ironworks:   { label: 'Σιδηροκατασκευές', icon: 'ph-hammer' },
+            churches:    { label: 'Εκκλησίες', icon: 'ph-church' },
+            insulations: { label: 'Μονώσεις & Σκεπές', icon: 'ph-drop' }
+        };
+
+        const renderGallery = (data) => {
+            const frag = document.createDocumentFragment();
+            (data.projects || []).forEach(project => {
+                const cat = CATS[project.category] || { label: project.title, icon: 'ph-image' };
+                (project.images || []).forEach(src => {
+                    const fig = document.createElement('figure');
+                    fig.className = 'shot';
+                    fig.setAttribute('data-cat', project.category);
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = project.title;
+                    img.loading = 'lazy';
+                    const cap = document.createElement('figcaption');
+                    cap.className = 'cap';
+                    cap.innerHTML = `<i class="ph-fill ${cat.icon}"></i> `;
+                    cap.append(project.title);
+                    fig.append(img, cap);
+                    frag.append(fig);
+                });
+            });
+            gallery.innerHTML = '';
+            gallery.append(frag);
+        };
+
+        const applyFilter = (f) => {
+            $$('.shot', gallery).forEach((s, i) => {
+                const show = f === 'all' || s.getAttribute('data-cat') === f;
+                s.hidden = !show;
+                if (show && !reduce) {
+                    s.style.animation = 'none';
+                    void s.offsetWidth;
+                    s.style.animation = `popIn 0.5s var(--ease) both`;
+                    s.style.animationDelay = (i % 6) * 0.05 + 's';
+                }
+            });
+        };
+
         const filters = $$('.filter');
-        const shots = $$('.shot');
         filters.forEach(btn => {
             btn.addEventListener('click', () => {
                 filters.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const f = btn.getAttribute('data-filter');
-                shots.forEach((s, i) => {
-                    const show = f === 'all' || s.getAttribute('data-cat') === f;
-                    s.hidden = !show;
-                    if (show && !reduce) {
-                        s.style.animation = 'none';
-                        void s.offsetWidth;
-                        s.style.animation = `popIn 0.5s var(--ease) both`;
-                        s.style.animationDelay = (i % 6) * 0.05 + 's';
-                    }
-                });
+                applyFilter(btn.getAttribute('data-filter'));
             });
         });
 
-        /* ---- Lightbox ---- */
+        if (gallery) {
+            fetch('projects.json', { cache: 'no-cache' })
+                .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(renderGallery)
+                .catch(() => {
+                    gallery.innerHTML = '<p class="load-note">Δεν ήταν δυνατή η φόρτωση των έργων. Δοκιμάστε ξανά αργότερα.</p>';
+                });
+        }
+
+        /* ---- Lightbox (event delegation — works for dynamic shots) ---- */
         const lb = $('#lb'), lbImg = $('#lbImg'), lbClose = $('#lbClose');
         const openLb = (src, alt) => {
             lbImg.src = src; lbImg.alt = alt || '';
@@ -148,7 +192,10 @@
             lbClose.focus();
         };
         const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
-        $$('.shot img').forEach(img => img.addEventListener('click', () => openLb(img.src, img.alt)));
+        document.addEventListener('click', e => {
+            const img = e.target.closest('.shot img');
+            if (img) openLb(img.src, img.alt);
+        });
         lbClose.addEventListener('click', closeLb);
         lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
 

@@ -1,0 +1,55 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Πού αποθηκεύονται οι φωτογραφίες που ανεβάζεις
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+locale: "el"
+
+# Μήνυμα commit (τι γράφεται στο ιστορικό όταν δημοσιεύεις)
+backend_commit_messages:
+  create: "Νέο έργο: {{slug}}"
+  update: "Ενημέρωση έργων"
+  uploadMedia: "Νέα φωτογραφία: {{path}}"
+  deleteMedia: "Διαγραφή φωτογραφίας: {{path}}"
+
+collections:
+  - name: "portfolio"
+    label: "Έργα (Portfolio)"
+    description: "Πρόσθεσε ή επεξεργάσου τα έργα που εμφανίζονται στη σελίδα."
+    files:
+      - name: "projects"
+        label: "Λίστα Έργων"
+        file: "projects.json"
+        format: "json"
+        fields:
+          - label: "Έργα"
+            name: "projects"
+            label_singular: "Έργο"
+            widget: "list"
+            summary: "{{fields.title}}  ·  {{fields.category}}"
+            fields:
+              - label: "Τίτλος Έργου"
+                name: "title"
+                widget: "string"
+                hint: "π.χ. Ανακαίνιση διαμερίσματος, Τρίκαλα"
+              - label: "Κατηγορία"
+                name: "category"
+                widget: "select"
+                default: "renovations"
+                options:
+                  - { label: "Ανακαινίσεις", value: "renovations" }
+                  - { label: "Γυψοσανίδες / Ξηρά Δόμηση", value: "drywall" }
+                  - { label: "Σιδηροκατασκευές", value: "ironworks" }
+                  - { label: "Εκκλησίες", value: "churches" }
+                  - { label: "Μονώσεις & Σκεπές", value: "insulations" }
+              - label: "Φωτογραφίες"
+                name: "images"
+                widget: "list"
+                hint: "Ανέβασε μία ή περισσότερες φωτογραφίες του έργου."
+                field:
+                  label: "Φωτογραφία"
+                  name: "image"
+                  widget: "image"

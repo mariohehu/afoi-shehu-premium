@@ -1,0 +1,97 @@
+{
+  "projects": [
+    {
+      "title": "Ανακαινίσεις & Αναπαλαιώσεις",
+      "category": "renovations",
+      "images": [
+        "assets/renovations/renovation-1.jpg",
+        "assets/renovations/renovation-2.jpg",
+        "assets/renovations/renovation-3.jpg",
+        "assets/renovations/renovation-4.jpg"
+      ]
+    },
+    {
+      "title": "Ξηρά Δόμηση & Γυψοσανίδες",
+      "category": "drywall",
+      "images": [
+        "assets/drywall/drywall-3.jpg",
+        "assets/drywall/drywall-1.jpg",
+        "assets/drywall/drywall-2.jpg",
+        "assets/drywall/drywall-5.jpg",
+        "assets/drywall/drywall-6.jpg",
+        "assets/drywall/drywall-4.jpg",
+        "assets/drywall/drywall-7.jpg",
+        "assets/drywall/drywall-8.jpg",
+        "assets/drywall/drywall-9.jpg",
+        "assets/drywall/drywall-10.jpg"
+      ]
+    },
+    {
+      "title": "Σιδηροκατασκευές",
+      "category": "ironworks",
+      "images": [
+        "assets/ironworks/ironworks-1.jpg",
+        "assets/ironworks/ironworks-2.jpg",
+        "assets/ironworks/ironworks-3.jpg",
+        "assets/ironworks/ironworks-4.jpg",
+        "assets/ironworks/ironworks-5.jpg",
+        "assets/ironworks/ironworks-6.jpg",
+        "assets/ironworks/ironworks-7.jpg",
+        "assets/ironworks/ironworks-8.jpg",
+        "assets/ironworks/ironworks-9.jpg",
+        "assets/ironworks/ironworks-10.jpg"
+      ]
+    },
+    {
+      "title": "Έργα σε Εκκλησίες",
+      "category": "churches",
+      "images": [
+        "assets/churches/churches-1.jpg",
+        "assets/churches/churches-2.jpg",
+        "assets/churches/churches-3.jpg",
+        "assets/churches/churches-4.jpg",
+        "assets/churches/churches-5.jpg",
+        "assets/churches/churches-6.jpg",
+        "assets/churches/churches-7.jpg",
+        "assets/churches/churches-8.jpg",
+        "assets/churches/churches-9.jpg",
+        "assets/churches/churches-10.jpg",
+        "assets/churches/churches-11.jpg",
+        "assets/churches/churches-12.jpg",
+        "assets/churches/churches-13.jpg",
+        "assets/churches/churches-14.jpg",
+        "assets/churches/churches-15.jpg"
+      ]
+    },
+    {
+      "title": "Μονώσεις & Σκεπές",
+      "category": "insulations",
+      "images": [
+        "assets/insulations/insulation-1.jpg",
+        "assets/insulations/insulation-2.jpg",
+        "assets/insulations/insulation-3.jpg",
+        "assets/insulations/insulation-4.jpg",
+        "assets/insulations/insulation-5.jpg",
+        "assets/insulations/insulation-6.jpg",
+        "assets/insulations/insulation-7.jpg",
+        "assets/insulations/insulation-8.jpg",
+        "assets/insulations/insulation-9.jpg",
+        "assets/insulations/insulation-10.jpg",
+        "assets/insulations/insulation-11.jpg",
+        "assets/insulations/insulation-12.jpg",
+        "assets/insulations/insulation-13.jpg",
+        "assets/insulations/insulation-14.jpg",
+        "assets/insulations/insulation-15.jpg",
+        "assets/insulations/insulation-16.jpg",
+        "assets/insulations/insulation-17.jpg",
+        "assets/insulations/insulation-18.jpg",
+        "assets/insulations/insulation-19.jpg",
+        "assets/insulations/insulation-20.jpg",
+        "assets/insulations/insulation-21.jpg",
+        "assets/insulations/insulation-22.jpg",
+        "assets/insulations/insulation-23.jpg",
+        "assets/insulations/insulation-24.jpg"
+      ]
+    }
+  ]
+}
